@@ -1,12 +1,16 @@
 #include "Calculator.hpp"
 #include <iostream>
-#include <cmath>
 #include <sstream>
+#include <fstream>
+#include <algorithm>
 
+/**
+ * @brief Constructor initializes the order counter.
+ */
 Calculator::Calculator() : current_order(1) {}
 
 double Calculator::compute(double a, double b, Operation op) {
-    double result;
+    double result = 0.0;
     std::ostringstream desc;
 
     switch (op) {
@@ -23,12 +27,18 @@ double Calculator::compute(double a, double b, Operation op) {
             desc << a << " * " << b << " = " << result;
             break;
         case Operation::DIVISION:
-            if (b == 0.0) throw std::invalid_argument("Division by zero");
+            if (b == 0.0)
+            {
+                throw std::invalid_argument("Division by zero");
+            }
             result = a / b;
             desc << a << " / " << b << " = " << result;
             break;
+        default:
+            std::cout << "Unknown operation" << std::endl;
     }
 
+    // Store operands and result in history
     addToHistory(a, "Operand A");
     addToHistory(b, "Operand B");
     addToHistory(result, desc.str());
@@ -50,12 +60,54 @@ bool Calculator::isEven(double num) {
 }
 
 void Calculator::printHistory() const {
-    std::cout << "\n--- Operation History ---\n";
+    std::cout <<"\n--- Operation History ---\n";
     for (const auto& entry : history) {
         std::cout << "Order: " << entry.order
                   << ", Value: " << entry.value
                   << ", Even: " << (entry.is_even ? "Yes" : "No")
-                  << ", Desc: " << entry.description << "\n";
+                  << ", Desc: " << entry.description << std::endl;
+    }
+}
+
+void Calculator::saveToFile(const std::string& filename) const {
+    std::ofstream ofs(filename);
+    for (const auto& entry : history) {
+        ofs << entry.order << "," << entry.value << "," << entry.is_even << "," << entry.description << "\n";
+    }
+}
+
+void Calculator::loadFromFile(const std::string& filename) {
+    std::ifstream ifs(filename);
+    std::string line;
+    history.clear();
+    current_order = 1;
+    while (std::getline(ifs, line)) {
+        std::istringstream iss(line);
+        std::string token;
+        NumberInfo info;
+        std::getline(iss, token, ','); info.order = std::stoi(token);
+        std::getline(iss, token, ','); info.value = std::stod(token);
+        std::getline(iss, token, ','); info.is_even = (token == "1");
+        std::getline(iss, token); info.description = token;
+        history.push_back(info);
+        current_order = std::max(current_order, info.order + 1);
+    }
+}
+
+void Calculator::filterAndPrint(bool even, bool odd, Operation* op) const {
+    for (const auto& entry : history) {
+        if ((even && entry.is_even) || (odd && !entry.is_even)) {
+            if (op) {
+                if (entry.description.find("+") == std::string::npos && *op == Operation::ADDITION) continue;
+                if (entry.description.find("-") == std::string::npos && *op == Operation::SUBTRACTION) continue;
+                if (entry.description.find("*") == std::string::npos && *op == Operation::MULTIPLICATION) continue;
+                if (entry.description.find("/") == std::string::npos && *op == Operation::DIVISION) continue;
+            }
+            std::cout << "Order: " << entry.order
+                << ", Value: " << entry.value
+                << ", Even: " << (entry.is_even ? "Yes" : "No")
+                << ", Desc: " << entry.description << std::endl;
+        }
     }
 }
 

@@ -2,15 +2,25 @@
 project(CalculatorApp)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+#  /MDd
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 include_directories(include)
 
+# Main
 add_executable(CalculatorApp src/main.cpp src/Calculator.cpp)
 
-# Tests
+# GTest
+add_subdirectory(external/googletest)
 enable_testing()
-add_executable(CalculatorTest tests/CalculatorTest.cpp src/Calculator.cpp)
+
+# Test
+add_executable(CalculatorTest
+    tests/CalculatorTest.cpp
+    src/Calculator.cpp
+)
 target_include_directories(CalculatorTest PRIVATE include)
-find_package(GTest REQUIRED)
-target_link_libraries(CalculatorTest GTest::gtest GTest::gtest_main)
-add_test(NAME CalculatorTest COMMAND CalculatorTest)
+target_link_libraries(CalculatorTest gtest gtest_main)

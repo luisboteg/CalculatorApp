@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <string>
-#include <memory>
 
 /**
  * @brief Enum to define arithmetic operations
@@ -45,11 +44,28 @@ public:
      * @brief Print operation history
      */
     void printHistory() const;
+    /**
+     * @brief Save operation history to a file
+     * @param filename File path
+     */
+    void saveToFile(const std::string& filename) const;
 
     /**
-     * @brief Get history data
+     * @brief Load operation history from a file
+     * @param filename File path
      */
+    void loadFromFile(const std::string& filename);
+
+    /**
+     * @brief Print filtered entries
+     * @param even Show even values
+     * @param odd Show odd values
+     * @param op Optional operation type to filter
+     */
+    void filterAndPrint(bool even, bool odd, Operation* op = nullptr) const;
+
     const std::vector<NumberInfo>& getHistory() const;
+
 
 private:
     std::vector<NumberInfo> history;

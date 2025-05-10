@@ -9,7 +9,17 @@
             "installRoot": "${projectDir}\\out\\install\\${name}",
             "cmakeCommandArgs": "",
             "buildCommandArgs": "",
-            "ctestCommandArgs": ""
+            "ctestCommandArgs": "",
+            "variables": [
+                {
+                    "name": "CMAKE_CXX_STANDARD",
+                    "value": "17"
+                },
+                {
+                    "name": "CMAKE_CXX_FLAGS_DEBUG",
+                    "value": "/MTd"
+                }
+            ]
         }
     ]
 }

@@ -1,0 +1,5 @@
+# Ignorar configuraciones de Visual Studio
+.vs/
+
+# Ignorar carpeta de compilación
+out/

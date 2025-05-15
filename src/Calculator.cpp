@@ -3,6 +3,7 @@
 #include <sstream>
 #include <fstream>
 #include <algorithm>
+//#include <muParser> ToAdd
 
 /**
  * @brief Constructor initializes the order counter.
@@ -45,6 +46,17 @@ double Calculator::compute(double a, double b, Operation op) {
 
     return result;
 }
+
+/* TODO
+double Calculator::evaluate(const std::string& expression) {
+    mu::Parser parser;
+    parser.SetExpr(expression);
+    double result = parser.Eval();
+
+    addToHistory(result, expression + " = " + std::to_string(result));
+    return result;
+}
+*/
 
 void Calculator::addToHistory(double value, const std::string& desc) {
     NumberInfo info;

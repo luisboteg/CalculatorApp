@@ -7,6 +7,7 @@
 /**
  * @brief Enum to define arithmetic operations
  */
+// Can be removed
 enum class Operation {
     ADDITION,
     SUBTRACTION,
@@ -39,6 +40,15 @@ public:
      * @return Result of the operation
      */
     double compute(double a, double b, Operation op);
+
+    /*
+    /**
+     * @brief Evaluates a math expression string using muParser
+     * @param expression A string containing the math expression (e.g. "5 + 3 * 2")
+     * @return Result of the evaluated expression
+     *
+    double evaluate(const std::string& expression);
+    */
 
     /**
      * @brief Print operation history

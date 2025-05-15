@@ -17,6 +17,10 @@ add_executable(CalculatorApp src/main.cpp src/Calculator.cpp)
 add_subdirectory(external/googletest)
 enable_testing()
 
+# MuParser
+#add_subdirectory(external/muparser)
+#target_link_libraries(CalculatorApp muparser)
+
 # Test
 add_executable(CalculatorTest
     tests/CalculatorTest.cpp

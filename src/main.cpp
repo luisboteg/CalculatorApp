@@ -104,7 +104,7 @@ int main()
             try 
             {
                 Operation op = static_cast<Operation>(choice - 1);
-                double result = calc.compute(a, b, op);
+                double result = calc.compute(a, b, op); // TODO replace with muParser
                 std::cout << "Result: " << result << std::endl;
             }
             catch (const std::exception& e) 
